@@ -1,0 +1,22 @@
+# Ignorar node_modules
+node_modules/
+
+# Archivos de dependencias
+package-lock.json
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de entorno (credenciales)
+.env
+
+# Carpetas de compilación o build
+dist/
+build/
+
+# Archivos de logs
+*.log
+
+# Configuración de VSCode
+.vscode/

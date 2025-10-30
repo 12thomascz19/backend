@@ -1,0 +1,20 @@
+const mongoose = require("mongoose");
+require("dotenv").config(); // Cargar variables del archivo .env
+
+// Función que conecta con MongoDB Atlas
+const connectDB = async () => {
+  try {
+    // Conectamos usando la URI del archivo .env
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+
+    console.log("Conectado correctamente a MongoDB Atlas");
+  } catch (error) {
+    console.error("Error al conectar a MongoDB:", error.message);
+    process.exit(1); // Cierra la app si hay un error
+  }
+};
+
+module.exports = connectDB;
