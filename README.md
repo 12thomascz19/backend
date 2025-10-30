@@ -24,32 +24,32 @@ Este repositorio contiene el **backend** del proyecto, desarrollado con **Node.j
 
 
 
-backend/
-│
-├── config/
-│ └── db.js # Conexión a MongoDB Atlas
-│
-├── controllers/
-│ ├── authController.js # Registro e inicio de sesión
-│ ├── juegoController.js # CRUD de juegos
-│ └── reseñaController.js# CRUD de reseñas
-│
-├── middleware/
-│ └── authMiddleware.js # Protección de rutas con JWT
-│
-├── models/
-│ ├── Usuario.js # Modelo de usuario
-│ ├── Juego.js # Modelo de juego
-│ └── Reseña.js # Modelo de reseña
-│
-├── routes/
-│ ├── authRoutes.js # Rutas de autenticación
-│ ├── juegoRoutes.js # Rutas de juegos
-│ └── reseñaRoutes.js # Rutas de reseñas
-│
-├── .env # Variables de entorno (no subir a GitHub)
-├── package.json
-└── server.js # Punto de entrada principal del servicio       
+      backend/
+      │
+      ├── config/
+      │ └── db.js # Conexión a MongoDB Atlas
+      │
+      ├── controllers/
+      │ ├── authController.js # Registro e inicio de sesión
+      │ ├── juegoController.js # CRUD de juegos
+      │ └── reseñaController.js# CRUD de reseñas
+      │
+      ├── middleware/
+      │ └── authMiddleware.js # Protección de rutas con JWT
+      │
+      ├── models/
+      │ ├── Usuario.js # Modelo de usuario
+      │ ├── Juego.js # Modelo de juego
+      │ └── Reseña.js # Modelo de reseña
+      │
+      ├── routes/
+      │ ├── authRoutes.js # Rutas de autenticación
+      │ ├── juegoRoutes.js # Rutas de juegos
+      │ └── reseñaRoutes.js # Rutas de reseñas
+      │
+      ├── .env # Variables de entorno (no subir a GitHub)
+      ├── package.json
+      └── server.js # Punto de entrada principal del servicio       
 
 
    ## ⚙️ Instalación y configuración                                                                                                                
