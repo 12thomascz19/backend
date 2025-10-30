@@ -49,7 +49,11 @@ backend/
 │
 ├── .env # Variables de entorno (no subir a GitHub)
 ├── package.json
-└── server.js # Punto de entrada principal del servicio                                                                                             ## ⚙️ Instalación y configuración                                                                                                                      npm install 
+└── server.js # Punto de entrada principal del servicio       
+
+
+   ## ⚙️ Instalación y configuración                                                                                                                
+     -npm install 
 
 ### 1️⃣ Clonar el repositorio
 
