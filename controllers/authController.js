@@ -67,3 +67,29 @@ exports.loginUsuario = async (req, res) => {
     res.status(500).json({ message: "Error en el login", error });
   }
 };
+
+// Exportamos una función nombrada 'verificarToken'
+exports.verificarToken = (req, res, next) => {
+  try {
+    // Header: "Authorization: Bearer <token>"
+    const authHeader = req.header("Authorization");
+
+    if (!authHeader) {
+      return res.status(401).json({ message: "Acceso denegado. No hay token." });
+    }
+
+    const token = authHeader.split(" ")[1]; // Extraemos el token
+
+    if (!token) {
+      return res.status(401).json({ message: "Acceso denegado. Token malformado." });
+    }
+
+    const verificado = jwt.verify(token, process.env.JWT_SECRET);
+    req.usuario = verificado; // guardamos info del token en req.usuario
+    next();
+  } catch (error) {
+    console.error("Auth middleware error:", error);
+    return res.status(401).json({ message: "Token inválido o expirado." });
+  }
+};
+

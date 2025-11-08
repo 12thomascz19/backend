@@ -1,15 +1,18 @@
 const mongoose = require("mongoose");
 
-const JuegoSchema = new mongoose.Schema({
-  usuarioId: { type: mongoose.Schema.Types.ObjectId, ref: "Usuario" }, // 🔥 Asociamos el juego al usuario
-  titulo: { type: String, required: true },
-  plataforma: { type: String, required: true },
-  genero: { type: String, required: true },
-  horasJugadas: { type: Number, default: 0 },
-  completado: { type: Boolean, default: false },
-  puntuacion: { type: Number, min: 1, max: 5 },
-  portada: { type: String },
-  fechaRegistro: { type: Date, default: Date.now },
-});
+const JuegoSchema = new mongoose.Schema(
+  {
+    titulo: { type: String, required: true, trim: true },
+    genero: { type: String, required: true },
+    plataforma: { type: String, required: true },
+    añoLanzamiento: { type: Number, required: true },
+    desarrollador: { type: String, required: true },
+    imagenPortada: { type: String, required: true },
+    descripcion: { type: String, required: true },
+    completado: { type: Boolean, default: false },
+    fechaCreacion: { type: Date, default: Date.now },
+  },
+  { collection: "juegos" }
+);
 
 module.exports = mongoose.model("Juego", JuegoSchema);
