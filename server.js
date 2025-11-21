@@ -5,7 +5,7 @@ const connectDB = require("./config/db");
 
 // Importamos las rutas
 const juegoRoutes = require("./routes/juegoRoutes");
-const reseñaRoutes = require("./routes/reseñaRoutes");
+const reseñaRoutes = require("./routes/resenaRoutes");
 const authRoutes = require("./routes/authRoutes");
 const explorarRoutes = require("./routes/explorarRoutes");
 const estadisticasRoutes = require("./routes/estadisticasRoutes");
@@ -23,9 +23,10 @@ app.get("/", (req, res) => {
   res.send("🎮 API GameTracker funcionando correctamente");
 });
 
-// 🔥 Usamos las rutas
+// Usamos las rutas
 app.use("/api/juegos", juegoRoutes);
-app.use("/api/reseñas", reseñaRoutes);
+app.use("/api/resenas", reseñaRoutes);
+
 app.use("/api/auth", authRoutes);
 app.use("/api/explorar", explorarRoutes);
 app.use("/api/estadisticas", estadisticasRoutes);

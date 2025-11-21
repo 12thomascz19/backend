@@ -8,6 +8,12 @@ const usuarioSchema = new mongoose.Schema(
     password: { type: String, required: true },
     descripcion: { type: String, default: "" },
     fotoPerfil: { type: String, default: "" },
+    biblioteca: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Juego",
+      },
+    ],
   },
   { timestamps: true }
 );
