@@ -10,6 +10,7 @@ const {
   eliminarJuego,
   agregarABiblioteca,
   obtenerBiblioteca,
+  quitarDeBiblioteca
 } = require("../controllers/juegoController");
 
 // Importar controlador de estadísticas (verifica que exista)
@@ -64,8 +65,12 @@ router.delete("/:id", verificarToken, eliminarJuego);
 // POST /api/juegos/agregar-a-biblioteca/:id
 router.post("/agregar-a-biblioteca/:id", verificarToken, agregarABiblioteca);
 
+// quitar un juego de biblioteca personal
+// POST /api/juegos/quitar-de-biblioteca
+router.delete("/quitar-de-biblioteca/:id", verificarToken, quitarDeBiblioteca);
+
 // Obtener la biblioteca del usuario autenticado
-// GET /api/juegos/mi-biblioteca
+// GET /api/juegos/mi-biblioteca/:id
 router.get("/mi-biblioteca", verificarToken, obtenerBiblioteca);
 
 module.exports = router;

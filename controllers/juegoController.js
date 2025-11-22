@@ -59,7 +59,9 @@ exports.obtenerMisJuegos = async (req, res) => {
     res.json(juegos);
   } catch (error) {
     console.error("Error al obtener los juegos del usuario:", error);
-    res.status(500).json({ message: "Error al obtener los juegos del usuario" });
+    res
+      .status(500)
+      .json({ message: "Error al obtener los juegos del usuario" });
   }
 };
 
@@ -149,10 +151,10 @@ exports.agregarABiblioteca = async (req, res) => {
     juegoId = juegoId.trim();
 
     if (!mongoose.Types.ObjectId.isValid(juegoId)) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         message: "ID de juego inválido. Debe ser un ObjectId válido.",
         idRecibido: juegoId,
-        ejemploValido: "507f1f77bcf86cd799439011"
+        ejemploValido: "507f1f77bcf86cd799439011",
       });
     }
 
@@ -172,9 +174,13 @@ exports.agregarABiblioteca = async (req, res) => {
       usuario.biblioteca = [];
     }
 
-    const already = usuario.biblioteca.map(String).includes(String(juegoObjectId));
+    const already = usuario.biblioteca
+      .map(String)
+      .includes(String(juegoObjectId));
     if (already) {
-      return res.status(400).json({ message: "El juego ya está en tu biblioteca" });
+      return res
+        .status(400)
+        .json({ message: "El juego ya está en tu biblioteca" });
     }
 
     usuario.biblioteca.push(juegoObjectId);
@@ -185,15 +191,84 @@ exports.agregarABiblioteca = async (req, res) => {
       biblioteca: usuario.biblioteca,
       juegoAgregado: {
         _id: juego._id,
-        titulo: juego.titulo
-      }
+        titulo: juego.titulo,
+      },
     });
   } catch (error) {
     console.error("Error al agregar a biblioteca:", error);
-    return res.status(500).json({ 
-      message: "Error interno del servidor", 
+    return res.status(500).json({
+      message: "Error interno del servidor",
       error: error.message,
-      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      stack: process.env.NODE_ENV === "development" ? error.stack : undefined,
+    });
+  }
+};
+
+// Función para quitar un juego de la biblioteca
+exports.quitarDeBiblioteca = async (req, res) => {
+  try {
+    const userId = req.usuario?.id;
+    let juegoId = req.params.id;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Usuario no autenticado." });
+    }
+
+    if (!juegoId) {
+      return res.status(400).json({ message: "Falta id de juego." });
+    }
+
+    juegoId = juegoId.trim();
+
+    if (!mongoose.Types.ObjectId.isValid(juegoId)) {
+      return res.status(400).json({
+        message: "ID de juego inválido. Debe ser un ObjectId válido.",
+        idRecibido: juegoId,
+        ejemploValido: "507f1f77bcf86cd799439011",
+      });
+    }
+
+    const juegoObjectId = new mongoose.Types.ObjectId(juegoId);
+
+    const juego = await Juego.findById(juegoObjectId);
+    if (!juego) {
+      return res.status(404).json({ message: "Juego no encontrado" });
+    }
+
+    const usuario = await Usuario.findById(userId);
+    if (!usuario) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    if (!Array.isArray(usuario.biblioteca)) {
+      usuario.biblioteca = [];
+    }
+
+    const index = usuario.biblioteca.map(String).indexOf(String(juegoObjectId));
+    if (index === -1) {
+      return res
+        .status(400)
+        .json({ message: "El juego no está en tu biblioteca" });
+    }
+
+    // Eliminar juego de la biblioteca
+    usuario.biblioteca.splice(index, 1);
+    await usuario.save();
+
+    return res.status(200).json({
+      message: "Juego eliminado de tu biblioteca",
+      biblioteca: usuario.biblioteca,
+      juegoEliminado: {
+        _id: juego._id,
+        titulo: juego.titulo,
+      },
+    });
+  } catch (error) {
+    console.error("Error al quitar de biblioteca:", error);
+    return res.status(500).json({
+      message: "Error interno del servidor",
+      error: error.message,
+      stack: process.env.NODE_ENV === "development" ? error.stack : undefined,
     });
   }
 };
