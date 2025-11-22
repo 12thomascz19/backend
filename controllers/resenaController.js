@@ -1,11 +1,13 @@
 const Reseña = require("../models/Resena");
 const Juego = require("../models/Juego");
 
-// Crear reseña
+/**
+ * Crear una nueva reseña
+ * POST /api/resenas
+ */
 exports.crearResena = async (req, res) => {
   try {
     const usuarioId = req.usuario.id;
-
     const {
       juegoId,
       textoReseña,
@@ -15,6 +17,7 @@ exports.crearResena = async (req, res) => {
       recomendaria,
     } = req.body;
 
+    // Validar campos obligatorios
     if (
       !juegoId ||
       !textoReseña ||
@@ -26,6 +29,7 @@ exports.crearResena = async (req, res) => {
       return res.status(400).json({ msg: "Todos los campos son obligatorios" });
     }
 
+    // Crear nueva reseña
     const nuevaResena = new Reseña({
       usuario: usuarioId,
       juego: juegoId,
@@ -49,7 +53,10 @@ exports.crearResena = async (req, res) => {
   }
 };
 
-// Obtener reseñas de un juego
+/**
+ * Obtener reseñas de un juego específico
+ * GET /api/resenas/juego/:juegoId
+ */
 exports.obtenerResenasPorJuego = async (req, res) => {
   try {
     const { juegoId } = req.params;
@@ -65,7 +72,10 @@ exports.obtenerResenasPorJuego = async (req, res) => {
   }
 };
 
-// Obtener reseñas del usuario
+/**
+ * Obtener todas las reseñas del usuario autenticado
+ * GET /api/resenas/mis-resenas
+ */
 exports.obtenerMisResenas = async (req, res) => {
   try {
     const reseñas = await Reseña.find({ usuario: req.usuario.id }).populate(
@@ -80,17 +90,20 @@ exports.obtenerMisResenas = async (req, res) => {
   }
 };
 
-// Actualizar reseña
+/**
+ *Actualizar una reseña propia
+ * PUT /api/resenas/:id
+ */
 exports.actualizarResena = async (req, res) => {
   try {
     const resenaId = req.params.id;
-
     let reseña = await Reseña.findById(resenaId);
 
     if (!reseña) {
       return res.status(404).json({ message: "Reseña no encontrada" });
     }
 
+    // Validar propietario
     if (reseña.usuario.toString() !== req.usuario.id) {
       return res.status(403).json({ message: "No puedes editar esta reseña" });
     }
@@ -107,17 +120,20 @@ exports.actualizarResena = async (req, res) => {
   }
 };
 
-// Eliminar reseña
+/**
+ * Eliminar una reseña propia
+ * DELETE /api/resenas/:id
+ */
 exports.eliminarResena = async (req, res) => {
   try {
     const resenaId = req.params.id;
-
     const reseña = await Reseña.findById(resenaId);
 
     if (!reseña) {
       return res.status(404).json({ message: "Reseña no encontrada" });
     }
 
+    // Validar propietario
     if (reseña.usuario.toString() !== req.usuario.id) {
       return res
         .status(403)
@@ -133,7 +149,10 @@ exports.eliminarResena = async (req, res) => {
   }
 };
 
-// Obtener TODAS las reseñas
+/**
+ * btener todas las reseñas del sistema (públicas)
+ * GET /api/resenas
+ */
 exports.obtenerResenas = async (req, res) => {
   try {
     const reseñas = await Reseña.find()

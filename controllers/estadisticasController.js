@@ -1,8 +1,12 @@
 const Juego = require("../models/Juego");
 
-// Obtener estadísticas del usuario según su biblioteca
+/**
+ * Obtener estadísticas del usuario según su biblioteca
+ * GET /api/juegos/mis-estadisticas
+ */
 exports.obtenerEstadisticasUsuario = async (req, res) => {
   try {
+    // Buscar juegos asociados al usuario autenticado
     const juegos = await Juego.find({ usuarioId: req.usuario.id });
 
     if (!juegos.length) {
@@ -24,18 +28,19 @@ exports.obtenerEstadisticasUsuario = async (req, res) => {
     const promedioPuntuacion =
       puntuaciones.reduce((a, b) => a + b, 0) / puntuaciones.length;
 
-    // Contar por plataforma
+    // Contar juegos por plataforma
     const porPlataforma = {};
     juegos.forEach((j) => {
       porPlataforma[j.plataforma] = (porPlataforma[j.plataforma] || 0) + 1;
     });
 
-    // Contar por género
+    // Contar juegos por género
     const porGenero = {};
     juegos.forEach((j) => {
       porGenero[j.genero] = (porGenero[j.genero] || 0) + 1;
     });
 
+    // Responder con estadísticas completas
     res.json({
       totalJuegos,
       completados,

@@ -1,6 +1,6 @@
 const Juego = require("../models/Juego");
 
-// 📥 Obtener todos los juegos públicos
+// Obtener todos los juegos públicos
 exports.obtenerJuegosPublicos = async (req, res) => {
   try {
     const juegos = await Juego.find().sort({ fechaCreacion: -1 });
@@ -10,7 +10,7 @@ exports.obtenerJuegosPublicos = async (req, res) => {
   }
 };
 
-// ➕ Crear nuevo juego (visible para todos)
+//  Crear nuevo juego (visible para todos)
 exports.crearJuegoPublico = async (req, res) => {
   try {
     const nuevoJuego = new Juego(req.body);

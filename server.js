@@ -20,7 +20,7 @@ connectDB();
 
 // Ruta base
 app.get("/", (req, res) => {
-  res.send("🎮 API GameTracker funcionando correctamente");
+  res.send(" API GameTracker funcionando correctamente");
 });
 
 // Usamos las rutas
@@ -38,5 +38,5 @@ app.use("/uploads", express.static("uploads"));
 // Puerto
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>
-  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`)
+  console.log(`Servidor corriendo en http://localhost:${PORT}`)
 );

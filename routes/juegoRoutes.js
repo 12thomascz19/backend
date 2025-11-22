@@ -17,7 +17,8 @@ let obtenerEstadisticasUsuario;
 try {
   ({ obtenerEstadisticasUsuario } = require("../controllers/estadisticasController"));
 } catch (error) {
-  console.warn("⚠️ No se pudo cargar el controlador de estadísticas:", error.message);
+  console.warn("No se pudo cargar el controlador de estadísticas:", error.message);
+  // Si no existe el controlador, se retorna un mensaje de error
   obtenerEstadisticasUsuario = (req, res) =>
     res
       .status(501)
@@ -31,30 +32,41 @@ const { verificarToken } = require("../middleware/authMiddleware");
    🔹 RUTAS PÚBLICAS (sin token)
    ========================================================= */
 
-// Obtener todos los juegos públicos
+// Obtener todos los juegos disponibles públicamente
+// GET /api/juegos/
 router.get("/", obtenerTodosLosJuegos);
 
-// Crear un nuevo juego (público, visible a todos)
+// Crear un nuevo juego (opcionalmente público)
+// POST /api/juegos/
 router.post("/", crearJuego);
 
 /* =========================================================
-   🔒 RUTAS PRIVADAS (requieren autenticación)
+   RUTAS PRIVADAS (requieren autenticación)
    ========================================================= */
 
-// Juegos personales
+// Obtener los juegos del usuario autenticado
+// GET /api/juegos/mis-juegos
 router.get("/mis-juegos", verificarToken, obtenerMisJuegos);
 
-// Estadísticas personales
+// Obtener estadísticas personales del usuario
+// GET /api/juegos/mis-estadisticas
 router.get("/mis-estadisticas", verificarToken, obtenerEstadisticasUsuario);
 
 // Actualizar un juego propio
+// PUT /api/juegos/:id
 router.put("/:id", verificarToken, actualizarJuego);
 
 // Eliminar un juego propio
+// DELETE /api/juegos/:id
 router.delete("/:id", verificarToken, eliminarJuego);
 
-// 📚 Biblioteca (privada por usuario)
+// Agregar un juego a la biblioteca personal
+// POST /api/juegos/agregar-a-biblioteca/:id
 router.post("/agregar-a-biblioteca/:id", verificarToken, agregarABiblioteca);
+
+// Obtener la biblioteca del usuario autenticado
+// GET /api/juegos/mi-biblioteca
 router.get("/mi-biblioteca", verificarToken, obtenerBiblioteca);
 
 module.exports = router;
+// Exportamos el router para integrarlo en app.js o server.js
